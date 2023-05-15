@@ -18,7 +18,7 @@ import { GamingApp } from "../../modules/Hook/jsonContents/GamingApp";
 import { ethers } from "ethers";
 import BigNumber from "bignumber.js";
 import CountDown from "count-down-react";
-import WinnerAlert from "../../modules/alert/winnerAlert";
+import WinnerAlert from "../../modules/alert/WinnerAlert";
 import { Usdc } from "../../modules/Hook/jsonContents/FaucetUSDC";
 
 function GamePage() {
