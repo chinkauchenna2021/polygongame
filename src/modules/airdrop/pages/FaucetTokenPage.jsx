@@ -132,10 +132,12 @@ function FaucetTokenPage() {
   const sendToken = async () => {
     try {
       const tx = await contracts.sendFaucetToken(addresses, "1000000000");
-      if (tx) {
+      const txSent = await tx.wait();
+      if (txSent) {
         showModal();
       } else {
         console.log("not working");
+        window.alert("Token Not Sent")
       }
     } catch (e) {
       console.log(e);

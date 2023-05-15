@@ -13,7 +13,9 @@ export const moveBack = () => {
 export const addressShortener = (data) => {
   const convertArray = Array.from(data);
   const firstArray = convertArray.slice(0, 3).join("");
-  const lastArray = convertArray.reverse().slice(0, 5).join("");
+  const lastArray = convertArray.slice(convertArray.length - 4, convertArray.length).join("");
+  console.log(lastArray)
+
   return firstArray + "..." + lastArray;
 };
 

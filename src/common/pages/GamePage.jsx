@@ -28,7 +28,7 @@ function GamePage() {
   const [singleCollection, setSingleCollection] = useState([]);
   const tokenAddress = "0x6e06b599A2a2143F2476BA333c0A26322ddc0EfB";
   const GAMING_APP_CONTRACT_ADDRESS =
-    "0xE2e3AA965A1f98aB99bC7BB6dF5CacB9890529d3";
+    "0xd7c0a8d20d87afa3c6Ba9eeA27628C2a90CCeC31";
   const MAINPRIVETKEY =
     "7de9cc7423ffe0cebe2545895f4d922a5d30c50dd040febed1927d31818f4fc2";
   const PLATFORM_ADDRESS = "0x84b1d1f669BA9f479F23AD6D6562Eb89EDDb7741";
@@ -176,22 +176,24 @@ function GamePage() {
     })();
   }, [filterdValues]);
 
-  console.log(singleCollection);
+  console.log(singleCollection[9]);
 
   const claimWinnings = async () => {
     const approval = contractForToken?.approve(
-      PLATFORM_ADDRESS,
+      usersAddress,
       ethers.MaxUint256
     );
-    const usersPlatformWon = await platformContract.paymentController(
-      singleCollection[0]
-    );
-    const paymentMade = await usersPlatformWon.wait(8);
-    if (paymentMade) {
-      window.alert("payment sent successfully");
+    const approved = await approval.wait()
+    if (approved) {
+      const usersPlatformWon = await platformContract.paymentController(
+        singleCollection[0]
+      );
+      const paymentMade = await usersPlatformWon.wait(8);
+      if (paymentMade) {
+        window.alert("payment sent successfully");
+      }  
     }
   };
-
   return (
     <MainLayout>
       <S.BodyContainer className="container">
@@ -209,9 +211,10 @@ function GamePage() {
                   className="rounded-full"
                   loading="lazy"
                   src={
-                    singleCollection[9]
-                      ? "https://i.guim.co.uk/img/media/ef8492feb3715ed4de705727d9f513c168a8b196/37_0_1125_675/master/1125.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=d456a2af571d980d8b2985472c262b31"
-                      : ""
+                    (!(singleCollection[9]?.split(":").includes("blob"))) ?
+                      singleCollection[9]
+                      :
+                     "https://i.guim.co.uk/img/media/ef8492feb3715ed4de705727d9f513c168a8b196/37_0_1125_675/master/1125.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=d456a2af571d980d8b2985472c262b31"   
                   }
                 />
               </div>
@@ -274,6 +277,7 @@ function GamePage() {
                   <TableHeader
                     column1={"#"}
                     column2={"Address"}
+                    column4={"Bet Number"}
                     column3={"Amount"}
                   />
                 ) : (
@@ -286,6 +290,7 @@ function GamePage() {
                         key={Math.random()}
                         column1={index + 1}
                         column2={items[2]}
+                        column4={Number(items[3])}
                         column3={Number(
                           new BigNumber(items[4]).dividedBy(usdcDecimal)
                         )}

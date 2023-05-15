@@ -1,17 +1,70 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import * as S from "./style/Styles";
 import NormalButtons from "../mainComponents/buttons/NormalButtons";
 import { BiCopyAlt, BiCaretDown, BiCaretUp } from "react-icons/bi";
 import SuccessButton from "../mainComponents/buttons/SuccessButton";
+import { getOnLocal, stripSpaces } from "../Hook/useHook";
+import { ethers } from 'ethers'
+import { Usdc } from "../Hook/jsonContents/FaucetUSDC";
+import BigNumber from "bignumber.js";
+import { addressShortener } from "../Hook/useHook";
+import { useNavigate } from "react-router-dom";
 
 function ContentViewer({ show, usersAddress }) {
+  const navigate = useNavigate();
+  const { shows, setShows } = show;
+  const FAUCET_CONTRACT_ADDRESS = "0x6e06b599A2a2143F2476BA333c0A26322ddc0EfB";
+  const PLATFORM_ADDRESS = "0x84b1d1f669BA9f479F23AD6D6562Eb89EDDb7741";
+  const nameSaveData ="saveData" 
   const [toggle, setToggle] = useState(false);
+  const [singleGameArray, setSingleGameArray] = useState();
+  const [addresses, setAddresses] = useState();
+  const [amount, setAmount] = useState();
   const expandable = () => {
     setToggle(!toggle);
-    console.log(toggle);
   };
 
-  const { shows, setShows } = show;
+  const data = useMemo(() => {
+    (async () => {
+      
+      if (window.ethereum) {
+        const providers = new ethers.BrowserProvider(window.ethereum);
+        const signer =  await providers.getSigner();
+        const address = await signer.getAddress();
+        const contract = new ethers.Contract(FAUCET_CONTRACT_ADDRESS, Usdc, signer);
+        const balance = await contract.balanceOf(address);
+         console.log(addressShortener(address))
+        setAddresses(addressShortener(address))
+        setAmount(Number(new BigNumber(balance).dividedBy(1000000)));
+        }
+    })()
+},[addresses])
+
+
+
+
+const localstorage = useMemo(() => {
+  (async () => {
+    if (shows == "") {
+      const local = getOnLocal(nameSaveData);
+      const singleValue = local.split(",")
+      setSingleGameArray(singleValue);
+      console.log(singleValue)
+      }
+
+  })()
+},[shows])
+
+
+
+
+console.log(shows)
+
+  
+  const enterGame = async () => {
+       navigate(`/singlePage/${stripSpaces(singleGameArray[2])}/${singleGameArray[0]}`)
+  }
+  
 
   return (
     <S.ModalContainer
@@ -31,7 +84,7 @@ function ContentViewer({ show, usersAddress }) {
               </div>
 
               <div className="capitalize text-slate-080 text-sm font-semibold">
-                Not Eligible
+                {(amount> 500)? (<div className="text-red-500">Not Eligible</div>) : (<div className="text-green-500">Eligible</div>)} 
               </div>
             </div>
             <div className="justify-between w-full h-12 flex flex-row my-3 space-x-1">
@@ -40,13 +93,13 @@ function ContentViewer({ show, usersAddress }) {
                   Balance
                 </div>
                 <div className=" font-bold tracking-wider text-sm">
-                  {"1 USDC "}
+                  {amount + " USDC"}
                 </div>
               </div>
               <div className="border border-orange-300  w-6/12 h-fit p-2">
                 <div className="text-xs w-full h-fit flex flex-row justify-between space-x-6">
                   <div className="flex justify-center items-center text-center w-fit h-fit font-bold tracking-wider text-sm text-slate-500">
-                    {usersAddress}
+                    {addresses}
                   </div>
                   <div className=" flex justify-center items-center ">
                     <BiCopyAlt size={15} color="gray" />
@@ -55,7 +108,7 @@ function ContentViewer({ show, usersAddress }) {
               </div>
             </div>
 
-            <div className="flex items-center justify-center w-full h-fit flex-col">
+            <div className="flex items-center justify-center w-full h-fit flex-col my-2">
               <div
                 className={`border-orange-300 h-${
                   toggle ? 40 : 8
@@ -77,21 +130,10 @@ function ContentViewer({ show, usersAddress }) {
                 </div>
                 <div className={`${toggle ? `overflow-y-scroll` : ``} h-40`}>
                   <div className="h-fit w-fit text-left px-4 pb-20 text-gray-500 text-sm">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                    Dicta suscipit vero debitis nostrum exercitationem iusto
-                    autem quibusdam deleniti voluptatem, molestias, pariatur
-                    dolores tempora cum doloremque omnis non nemo dolorem
-                    incidunt! Illum, autem mollitia similique magnam sint,
-                    cupiditate impedit veritatis facilis sapiente rerum
-                    eligendi? Dignissimos sapiente officia ex voluptatum ipsam
-                    maiores culpa nihil ut ducimus possimus corporis, quaerat
-                    labore fugiat illo.
+                   {(singleGameArray)?singleGameArray[12] :""}
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="w-full my-4 m-auto px-1">
-              <SuccessButton name={"claim Reward"} />
             </div>
           </div>
         </S.Body>
@@ -99,10 +141,8 @@ function ContentViewer({ show, usersAddress }) {
           <div className="flex flex-row p-3 space-x-4 border-t border-slate-300">
             <NormalButtons name={"close"} onClick={() => setShows("hidden")} />
             <NormalButtons
-              name={"create Bet"}
-              onClick={() => {
-                window.location.href = "/betPage";
-              }}
+              name={"Enter Bet"}
+              onClick={() =>enterGame()}
             />
           </div>
         </S.Footer>

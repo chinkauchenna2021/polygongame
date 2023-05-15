@@ -24,7 +24,8 @@ function Home() {
   const [startDateTime, setStartDateTime] = useState(new Date());
 
   const GAMING_APP_CONTRACT_ADDRESS =
-    "0xE2e3AA965A1f98aB99bC7BB6dF5CacB9890529d3";
+    "0xd7c0a8d20d87afa3c6Ba9eeA27628C2a90CCeC31";
+  const RANDOM_IMAGE = "https://dog.ceo/api/breeds/image/random";
   const [contracts, setContracts] = useState(null);
   const [signers, setSigner] = useState();
   const [providers, setProviders] = useState();
@@ -106,19 +107,25 @@ function Home() {
       const time = convertToMilliseconds(startDateTime);
       if (!time || !title || !min || !max || !minAmount || !img || !textArea)
         return;
-
+      const imagess = await fetch(RANDOM_IMAGE);
+      const images = await imagess.json();
+      const collImage = await (images.message); 
       const tx = await contracts.createBet(
         title,
         time,
         min,
         max,
         minAmount,
-        img,
+        collImage,
         textArea
       );
       const generatedGameId = await tx.wait();
-      console.log(generatedGameId, tx);
+      if (generatedGameId) {
+        window.alert("Game Created Successfully")
+        console.log(generatedGameId, tx);
+      }
     } catch (e) {
+      window.alert("Game Creation Failed")
       console.log(e);
     }
   };

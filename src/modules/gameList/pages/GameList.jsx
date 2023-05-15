@@ -21,7 +21,7 @@ const ListLength = [1, 2, 3, 4, 5, 6, 7];
 
 function GameList() {
   const [gameCreated, setGameCreated] = useState([]);
-  const GAMING_APP_CONTRACT_ADDRESS = "0xE2e3AA965A1f98aB99bC7BB6dF5CacB9890529d3";
+  const GAMING_APP_CONTRACT_ADDRESS = "0xd7c0a8d20d87afa3c6Ba9eeA27628C2a90CCeC31";
   const [contracts, setContracts] = useState(null);
   const [signers, setSigner] = useState();
   const [providers, setProviders] = useState();
@@ -84,7 +84,12 @@ function GameList() {
         setShows
   }
   
-
+  const enterModal = async (items , id) => {
+    const singleGame = gameCreated.filter((data) => Number(data[0] == Number(id)));
+    clearLocal(saveDataOnLocal);
+    setOnLocal(saveDataOnLocal,singleGame);
+    showModal();
+}
 
 
     return (
@@ -95,7 +100,7 @@ function GameList() {
         {
           (gameCreated).map((data, index) => {
             return (
-                <ListLayout key={Math.random()}  borderProperties={"border border-orange-400"}>
+              <ListLayout key={Math.random()}  borderProperties={"border border-orange-400"}>
           <div className='flex  cursor-pointer flex-row w-5/12 lg:w-5/12 space-x-6 h-full items-center' onClick={()=>enterSinglePage(stripSpaces(data[2]),Number(data[0]))}>
             <Image Img={data[9]} />
             <Title title={data[2]} />
@@ -105,7 +110,7 @@ function GameList() {
             <UsersEligibility />
             <GameTime gameTime={convertToDate(Number(data[3]))} />
             <ClaimReward />
-            <ThreeDots onClick={()=>showModal()} />
+            <ThreeDots onClick={()=>enterModal(stripSpaces(data[2]),Number(data[0]))} />
 
           </div>
         </ListLayout>

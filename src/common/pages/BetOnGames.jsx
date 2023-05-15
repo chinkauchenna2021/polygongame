@@ -16,7 +16,7 @@ function BetOnGames() {
   const { gameId, betNumber } = useParams();
   const [amount, setAmount] = useState("");
   const FAUCET_CONTRACT_ADDRESS = "0x6e06b599A2a2143F2476BA333c0A26322ddc0EfB";
-  const GAMING_APP_CONTRACT_ADDRESS ="0xE2e3AA965A1f98aB99bC7BB6dF5CacB9890529d3";
+  const GAMING_APP_CONTRACT_ADDRESS ="0xd7c0a8d20d87afa3c6Ba9eeA27628C2a90CCeC31";
   const PLATFORM_ADDRESS = "0x84b1d1f669BA9f479F23AD6D6562Eb89EDDb7741";
   const [contracts, setContracts] = useState(null);
   const [signers, setSigner] = useState();
@@ -74,11 +74,11 @@ function BetOnGames() {
         !(Number(amount) >= convertedAmount) ||
         balance < convertedAmount
       )
-        return;
+      return;
 
       const approval = await faucetContracts.approve(
-        PLATFORM_ADDRESS,
-        Number(new BigNumber(amount).mul(usdcDecimal))
+        GAMING_APP_CONTRACT_ADDRESS,
+       Number(new BigNumber(amount).mul(usdcDecimal))
       );
       const approvalReturn = await approval.wait();
       if (approvalReturn) {
@@ -88,9 +88,13 @@ function BetOnGames() {
           amount.toString()
         );
         const returnOutcome = await outcome.wait();
+        if (returnOutcome) {
+          window.alert("Bet Placed Successfully")
+        }
       }
     } catch (e) {
       console.log(e);
+       window.alert("Bet Failed")
     }
   };
 
