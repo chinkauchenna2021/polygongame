@@ -1,6 +1,6 @@
 import React from "react";
 import FaucetProvider from "../../modules/airdrop/provider/FaucetProvider";
-import MainLayout from "../layouts/mainLayout";
+import MainLayout from "./../layouts/MainLayout";
 
 function FaucetToken() {
   return (
