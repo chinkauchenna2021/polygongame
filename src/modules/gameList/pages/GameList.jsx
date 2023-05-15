@@ -89,7 +89,11 @@ function GameList() {
     clearLocal(saveDataOnLocal);
     setOnLocal(saveDataOnLocal,singleGame);
     showModal();
-}
+  }
+  
+  const enterGameSection = (items, id) => {
+       navigate(`/singlePage/${items}/${id}`)
+  }
 
 
     return (
@@ -109,7 +113,7 @@ function GameList() {
             <GameAmount amount={ data[6]} />
             <UsersEligibility />
             <GameTime gameTime={convertToDate(Number(data[3]))} />
-            <ClaimReward />
+            <ClaimReward onClicked={()=>enterGameSection(stripSpaces(data[2]),Number(data[0]))} />
             <ThreeDots onClick={()=>enterModal(stripSpaces(data[2]),Number(data[0]))} />
 
           </div>

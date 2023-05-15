@@ -40,9 +40,6 @@ function ContentViewer({ show, usersAddress }) {
     })()
 },[addresses])
 
-
-
-
 const localstorage = useMemo(() => {
   (async () => {
     if (shows == "") {
@@ -84,7 +81,7 @@ console.log(shows)
               </div>
 
               <div className="capitalize text-slate-080 text-sm font-semibold">
-                {(amount> 500)? (<div className="text-red-500">Not Eligible</div>) : (<div className="text-green-500">Eligible</div>)} 
+                {(Number(amount) > 500)? (<div className="text-red-500">Not Eligible</div>) : (<div className="text-green-500">Eligible</div>)} 
               </div>
             </div>
             <div className="justify-between w-full h-12 flex flex-row my-3 space-x-1">
