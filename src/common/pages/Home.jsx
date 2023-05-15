@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MainLayout from "../../layouts/mainLayout";
+import MainLayout from "./../layouts/mainLayout";
 import Title from "../../modules/mainComponents/title/Title";
 import * as S from "./styles/Styles";
 import Inputs from "../../modules/mainComponents/inputs/Inputs";
