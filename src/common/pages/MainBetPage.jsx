@@ -1,5 +1,5 @@
 import React from "react";
-import MainLayout from "../layouts/mainLayout";
+import MainLayout from "./../layouts/MainLayout";
 import Title from "../../modules/mainComponents/title/Title";
 import ListProvider from "../../modules/gameList/provider/ListProvider";
 import BackButton from "../../modules/mainComponents/buttons/BackButton";
