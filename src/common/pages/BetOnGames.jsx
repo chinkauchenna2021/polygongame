@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MainLayout from "../layouts/mainLayout";
+import MainLayout from "./../layouts/MainLayout";
 import Title from "../../modules/mainComponents/title/Title";
 import Inputs from "../../modules/mainComponents/inputs/Inputs";
 import NormalButtons from "../../modules/mainComponents/buttons/NormalButtons";

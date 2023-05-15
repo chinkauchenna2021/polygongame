@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, memo, useCallback } from "react";
-import MainLayout from "../layouts/mainLayout";
+import MainLayout from "./layouts/MainLayout";
 import { useParams, useNavigate } from "react-router-dom";
 import * as S from "./styles/Styles";
 import GameBtn from "../../modules/mainComponents/GameButton/GameBtn";
