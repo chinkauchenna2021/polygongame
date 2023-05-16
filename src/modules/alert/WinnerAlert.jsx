@@ -35,7 +35,7 @@ function WinnerAlert({
           </>
         ) : (
           <div className="w-full h-f capitalize text-center text-xl  py-5 font-bold lg:px-24">
-            you lost the game{" "}
+            you lost the game. Winning Outcome is  { " "+outcome}
           </div>
         )}
       </div>
