@@ -208,7 +208,7 @@ function GamePage() {
             <div className="w-36 h-36 flex justify-center items-center rounded-full ring-white ring-4 ring-offset-4 ring-offset-transparent absolute top-30">
               <div className="w-36 h-36 rounded-full ">
                 <img
-                  className="rounded-full"
+                  className="rounded-full h-36 w-36"
                   loading="lazy"
                   src={
                     (!(singleCollection[9]?.split(":").includes("blob"))) ?
