@@ -21,7 +21,7 @@ const ListLength = [1, 2, 3, 4, 5, 6, 7];
 
 function GameList() {
   const [gameCreated, setGameCreated] = useState([]);
-  const GAMING_APP_CONTRACT_ADDRESS = "0x05C1fc741786E51Ec3ff7e37ACa2d156e9441438";
+  const GAMING_APP_CONTRACT_ADDRESS = "0x7074358aB65f75A9a31C1C475c33f8F68d0Cb165";
   const [contracts, setContracts] = useState(null);
   const [signers, setSigner] = useState();
   const [providers, setProviders] = useState();

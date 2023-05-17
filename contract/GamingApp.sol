@@ -365,7 +365,7 @@ function paymentController(uint _gameId)public returns (uint payout , uint total
                             getWinnersAmount += usersBetCollection[i].userAmount; 
                             isWinnerAvailable = true;  
                             getNumberOfWinners +=1 ; 
-                            
+                            usersBetCollection[i].userAmount = 0;      
                       }else{
 
                           usersBetCollection[i].userAmount = 0;
@@ -385,16 +385,14 @@ function paymentController(uint _gameId)public returns (uint payout , uint total
                  for(uint i = 0 ; i < usersBetCollection.length; i++){
                 if((usersBetCollection[i].gameid == _gameId)){
                       if((usersBetCollection[i].userNumber == specificPayouts.outcome) && (usersBetCollection[i].userAddress == msg.sender)){
-
                       uint totalBalance =   usersBetCollection[i].userAmount + shareAmount;
                         userStatus = "You won, your earnings is currently transfered to your wallet";
                         //   payout winner here if any
                         tokenContract.transfer(usersBetCollection[i].userAddress,totalBalance); 
-                        specificPayouts.gameState = uint(GameState.PAYMENTCOMPLETED);
-
                       }
                 }
             } 
+         specificPayouts.gameState = uint(GameState.PAYMENTCOMPLETED);
           }else{
 
             // JUST SEND BETTERS BALANCE
@@ -405,9 +403,9 @@ function paymentController(uint _gameId)public returns (uint payout , uint total
                 //   payout += usersBetCollection[i].userAmount;
                  userStatus = "Their is no winner";
                  tokenContract.transfer(usersBetCollection[i].userAddress,paymentAmount);  
-                 specificPayouts.gameState = uint(GameState.PAYMENTCOMPLETED);
                 }
             } 
+          specificPayouts.gameState = uint(GameState.PAYMENTCOMPLETED);
             
           }
 
