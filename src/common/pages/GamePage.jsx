@@ -28,7 +28,7 @@ function GamePage() {
   const [singleCollection, setSingleCollection] = useState([]);
   const tokenAddress = "0x6e06b599A2a2143F2476BA333c0A26322ddc0EfB";
   const GAMING_APP_CONTRACT_ADDRESS =
-    "0xd7c0a8d20d87afa3c6Ba9eeA27628C2a90CCeC31";
+    "0x05C1fc741786E51Ec3ff7e37ACa2d156e9441438";
   const MAINPRIVETKEY =
     "7de9cc7423ffe0cebe2545895f4d922a5d30c50dd040febed1927d31818f4fc2";
   const PLATFORM_ADDRESS = "0x84b1d1f669BA9f479F23AD6D6562Eb89EDDb7741";
@@ -40,7 +40,7 @@ function GamePage() {
   const [filterdValues, setFilteredValues] = useState();
   const [getCurrentDate, setGetCurrentDate] = useState(0);
   const [getGameStatus, setGetGameStatus] = useState("Game Ended ");
-  const SETINTERVAL_TIME = 100000;
+  const SETINTERVAL_TIME = 10000000;
   const [platformContract, setPlatformContract] = useState();
   const [usersAddress, setUsersAddress] = useState();
   const [addressStatus, setAddressStatus] = useState();
@@ -130,22 +130,23 @@ function GamePage() {
   const timeWatcher = useMemo(() => {
     (async () => {
       const dateTmeChecker = async () => {
-        const gameTimeStamp = Number(singleCollection[3]);
-        const currentTime = new Date().getTime();
+        let gameTimeStamp = (Number(singleCollection[3]) * 1000);
+        let currentTime = new Date().getTime();
         if (gameTimeStamp > currentTime) {
-          let timeDifference = gameTimeStamp - currentTime;
-          let timeInDays = Math.ceil(timeDifference / (24 * (60 * 60) * 1000));
-          setGetGameStatus("Game is On , ");
-          setGetCurrentDate(timeInDays);
+          setGetGameStatus("Game is On");
+          setGetCurrentDate(true);
         } else {
-          if (gameTimeStamp + 300 < currentTime) {
-            const gameOutput = await platformContract.generateOutcome(
-              singleCollection[0]
-            );
-            console.log(gameOutput);
+          try {
+            if ((gameTimeStamp + 300) < currentTime) {
+              const gameOutput = await platformContract.generateOutcome(
+                singleCollection[0]
+              );
+            }
+            setGetGameStatus("Game Has Ended");
+            setGetCurrentDate(false);
+          } catch (e) {
+            console.log(e)
           }
-          setGetGameStatus("Game Has Ended");
-          setGetCurrentDate(0);
         }
       };
       setTimeout(dateTmeChecker, 100);
@@ -176,22 +177,28 @@ function GamePage() {
     })();
   }, [filterdValues]);
 
-  console.log(singleCollection[9]);
-
   const claimWinnings = async () => {
-    const approval = contractForToken?.approve(
-      usersAddress,
-      ethers.MaxUint256
-    );
-    const approved = await approval.wait()
-    if (approved) {
-      const usersPlatformWon = await platformContract.paymentController(
-        singleCollection[0]
+    try {
+      const amountOnWallet = await contractForToken.balanceOf(GAMING_APP_CONTRACT_ADDRESS);
+      const approval = await contractForToken?.approve(
+        usersAddress,
+        (Number(amountOnWallet)).toString()
+        
       );
-      const paymentMade = await usersPlatformWon.wait(8);
-      if (paymentMade) {
-        window.alert("payment sent successfully");
-      }  
+      const collection = await approval.wait(4)
+      if (collection) {
+  
+          const usersPlatformWon = await platformContract.paymentController(
+            singleCollection[0]
+          );
+          const paymentMade = await usersPlatformWon.wait(8);
+          if (paymentMade) {
+            window.alert("payment sent successfully"); 
+        }
+      }
+    
+    } catch (e) {
+      window.alert("Winner already claimed Reward!!!")
     }
   };
   return (
@@ -236,7 +243,7 @@ function GamePage() {
         <div className="w-11/12 lg:w-5/12 h-fit mt-2">
           <div className="text-lg my-4 border flex justify-center items-center border-dotted border-orange-400 w-full h-30">
             <div className="w-fit h-fit text-lg lg:text-2xl capitalize text-pink-700 tracking-wider font-bold px-2 py-10">
-              {getGameStatus + " " + getCurrentDate + "days remaining"}
+              {getGameStatus}
             </div>
           </div>
 
@@ -245,7 +252,7 @@ function GamePage() {
               Play Game (choose number)
             </div>
             <S.ScrollDesign className="flex flex-wrap p-3  justify-center w-11/12 max-h-[170px] overflow-y-scroll border-dotted border-2  border-spacing-2 rounded">
-              {!(getCurrentDate == 0) ? (
+              {!(getCurrentDate == false) ? (
                 displayGameNumbers(
                   Number(singleCollection[4]),
                   Number(singleCollection[5])
@@ -315,7 +322,7 @@ function GamePage() {
           <BackButton />
         </div>
       </div>
-      {getCurrentDate == 0 ? (
+      {(!getCurrentDate) ? (
         <WinnerAlert
           winnings={winnings}
           addressStatus={addressStatus}

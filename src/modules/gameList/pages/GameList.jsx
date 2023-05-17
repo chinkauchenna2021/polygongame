@@ -21,7 +21,7 @@ const ListLength = [1, 2, 3, 4, 5, 6, 7];
 
 function GameList() {
   const [gameCreated, setGameCreated] = useState([]);
-  const GAMING_APP_CONTRACT_ADDRESS = "0xd7c0a8d20d87afa3c6Ba9eeA27628C2a90CCeC31";
+  const GAMING_APP_CONTRACT_ADDRESS = "0x05C1fc741786E51Ec3ff7e37ACa2d156e9441438";
   const [contracts, setContracts] = useState(null);
   const [signers, setSigner] = useState();
   const [providers, setProviders] = useState();
@@ -112,7 +112,7 @@ function GameList() {
           <div className='flex flex-row w-7/12 lg:w-7/12 justify-between items-center h-full'>
             <GameAmount amount={ data[6]} />
             <UsersEligibility />
-            <GameTime gameTime={convertToDate(Number(data[3]))} />
+            <GameTime gameTime={convertToDate(Number(data[3] ) * 1000)} />
             <ClaimReward onClicked={()=>enterGameSection(stripSpaces(data[2]),Number(data[0]))} />
             <ThreeDots onClick={()=>enterModal(stripSpaces(data[2]),Number(data[0]))} />
 

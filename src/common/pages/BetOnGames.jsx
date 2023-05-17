@@ -16,7 +16,7 @@ function BetOnGames() {
   const { gameId, betNumber } = useParams();
   const [amount, setAmount] = useState("");
   const FAUCET_CONTRACT_ADDRESS = "0x6e06b599A2a2143F2476BA333c0A26322ddc0EfB";
-  const GAMING_APP_CONTRACT_ADDRESS ="0xd7c0a8d20d87afa3c6Ba9eeA27628C2a90CCeC31";
+  const GAMING_APP_CONTRACT_ADDRESS ="0x05C1fc741786E51Ec3ff7e37ACa2d156e9441438";
   const PLATFORM_ADDRESS = "0x84b1d1f669BA9f479F23AD6D6562Eb89EDDb7741";
   const [contracts, setContracts] = useState(null);
   const [signers, setSigner] = useState();

@@ -24,7 +24,7 @@ function Home() {
   const [startDateTime, setStartDateTime] = useState(new Date());
 
   const GAMING_APP_CONTRACT_ADDRESS =
-    "0xd7c0a8d20d87afa3c6Ba9eeA27628C2a90CCeC31";
+    "0x05C1fc741786E51Ec3ff7e37ACa2d156e9441438";
   const RANDOM_IMAGE = "https://dog.ceo/api/breeds/image/random";
   const [contracts, setContracts] = useState(null);
   const [signers, setSigner] = useState();
@@ -104,7 +104,8 @@ function Home() {
 
   const submit = async () => {
     try {
-      const time = convertToMilliseconds(startDateTime);
+      const times = convertToMilliseconds(startDateTime);
+      const time = Math.floor(times / 1000)
       if (!time || !title || !min || !max || !minAmount || !img || !textArea)
         return;
       const imagess = await fetch(RANDOM_IMAGE);

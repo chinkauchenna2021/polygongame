@@ -8,9 +8,12 @@ function WinnerAlert({
   addressStatus = false,
   winnings = null,
 }) {
+
+
+  
   return (
     <S.AlertContainer className=" fixed w-full h-full top-0 left-0 flex justify-center items-center">
-      <div className="w-11/12 lg:w-4/12 flex-col h-40 bg-white rounded-xl relative justify-center items-center ">
+      <div className="w-11/12 lg:w-4/12 flex-col h-fit py-5 bg-white rounded-xl relative justify-center items-center ">
         {/* <Image src="../../celebration.gif"  styles={"relative rounded-lg"} /> */}
         <div className="w-full text-center text-lg font-bold h-fit py-4">
           {outcome == 0
